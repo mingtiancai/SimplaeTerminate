@@ -21,6 +21,10 @@ class Console : public QPlainTextEdit {
  private:
   QString m_userName;
   QProcess *m_pProcess;
+  QString m_userID;
+  QColor m_normalTextColor;
+  QColor m_errorTextColor;
+  QTextCharFormat m_fmt;
 };
 
 #endif  // CONSOLE_H
