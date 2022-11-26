@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     m_pConsole->setEnabled(true);
     setCentralWidget(m_pConsole);
+    setWindowTitle("SimpleTiminate");
 }
 
 MainWindow::~MainWindow()

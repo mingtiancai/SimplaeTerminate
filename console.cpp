@@ -9,7 +9,16 @@ Console::Console(QWidget *parent) : QPlainTextEdit(parent) {
   p.setColor(QPalette::Base, Qt::black);
   p.setColor(QPalette::Text, Qt::green);
   setPalette(p);
+
+  m_pProcess = new QProcess();
+
+  m_userName = "gaoming";
+  this->appendPlainText(m_userName + ":");
 }
+
+void Console::setUserName(QString name) { m_userName = name; }
+
+QString Console::getUserName() const { return m_userName; }
 
 void Console::keyPressEvent(QKeyEvent *e) {
   switch (e->key()) {
@@ -26,12 +35,16 @@ void Console::keyPressEvent(QKeyEvent *e) {
           this->document()
               ->findBlockByLineNumber(this->document()->lineCount() - 1)
               .text();
-      QProcess p(0);
-      p.start("cmd", QStringList() << "/c" << command);
-      p.waitForStarted();
-      p.waitForFinished();
-      QString strTemp = QString::fromLocal8Bit(p.readAllStandardOutput());
-      this->appendPlainText(strTemp);
+
+      QString commandNew = command.replace(m_userName + ":", "");
+
+      m_pProcess->start("cmd", QStringList() << "/c" << commandNew);
+      m_pProcess->waitForStarted();
+      m_pProcess->waitForFinished();
+      QString strTemp =
+          QString::fromLocal8Bit(m_pProcess->readAllStandardOutput());
+      QString outputStr = strTemp + "\n" + m_userName + ":";
+      this->appendPlainText(outputStr);
       break;
     }
     default:
