@@ -2,9 +2,9 @@
 
 #include <QDebug>
 #include <QProcess>
+#include <QTextBlock>
 
 Console::Console(QWidget *parent) : QPlainTextEdit(parent) {
-  document()->setMaximumBlockCount(100);
   QPalette p = palette();
   p.setColor(QPalette::Base, Qt::black);
   p.setColor(QPalette::Text, Qt::green);
@@ -22,10 +22,12 @@ void Console::keyPressEvent(QKeyEvent *e) {
       break;
     }
     case Qt::Key_Return: {
-      qDebug() << "return";
+      QString command =
+          this->document()
+              ->findBlockByLineNumber(this->document()->lineCount() - 1)
+              .text();
       QProcess p(0);
-      p.start("cmd", QStringList() << "/c"
-                                   << "dir");
+      p.start("cmd", QStringList() << "/c" << command);
       p.waitForStarted();
       p.waitForFinished();
       QString strTemp = QString::fromLocal8Bit(p.readAllStandardOutput());
