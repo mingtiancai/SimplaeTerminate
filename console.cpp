@@ -1,6 +1,7 @@
 #include "console.h"
 
 #include <QDebug>
+#include <QProcess>
 
 Console::Console(QWidget *parent) : QPlainTextEdit(parent) {
   document()->setMaximumBlockCount(100);
@@ -12,12 +13,25 @@ Console::Console(QWidget *parent) : QPlainTextEdit(parent) {
 
 void Console::keyPressEvent(QKeyEvent *e) {
   switch (e->key()) {
-    case Qt::Key_Backspace:
-    case Qt::Key_Left:
-    case Qt::Key_Right:
-    case Qt::Key_Up:
-    case Qt::Key_Down:
+    case Qt::Key_Backspace: {
+      qDebug() << "back";
       break;
+    }
+    case Qt::Key_Enter: {
+      qDebug() << "enter";
+      break;
+    }
+    case Qt::Key_Return: {
+      qDebug() << "return";
+      QProcess p(0);
+      p.start("cmd", QStringList() << "/c"
+                                   << "dir");
+      p.waitForStarted();
+      p.waitForFinished();
+      QString strTemp = QString::fromLocal8Bit(p.readAllStandardOutput());
+      this->appendPlainText(strTemp);
+      break;
+    }
     default:
       QPlainTextEdit::keyPressEvent(e);
   }
