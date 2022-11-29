@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
   m_pConsole->setEnabled(true);
   setCentralWidget(m_pConsole);
-  setWindowTitle("SimpleTiminate");
+  setWindowTitle("SimpleTerminal");
   QIcon icon = QIcon("C:/projects/SimpleTerminate/terminateLogo.png");
   setWindowIcon(icon);
 }
