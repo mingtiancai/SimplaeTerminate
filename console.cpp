@@ -44,7 +44,6 @@ void Console::keyPressEvent(QKeyEvent *e) {
         QPlainTextEdit::keyPressEvent(e);
     }
     case Qt::Key_Enter: {
-      qDebug() << "enter";
       break;
     }
     case Qt::Key_Return: {
